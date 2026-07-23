@@ -1,6 +1,9 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SUM 戰情室 · Auto Intelligence Platform</title>
+<title>SUM 保修戰情室 · Auto Intelligence Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700;800&family=Noto+Sans+TC:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -166,7 +169,14 @@ body{font-family:'Noto Sans TC','Saira',system-ui,sans-serif;background:var(--bg
 .admin-toast.on{display:block;animation:toastIn .25s ease-out;}@keyframes toastIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 .qc-list{display:grid;gap:8px;}.qc-item{display:flex;gap:10px;align-items:flex-start;background:rgba(15,23,42,.52);border:1px solid var(--bd);border-left:3px solid var(--gd);border-radius:8px;padding:10px 12px;font-size:11.5px;}.qc-item.good{border-left-color:var(--gr)}.qc-item.bad{border-left-color:var(--rd)}.qc-title{font-weight:700;margin-bottom:2px}.qc-desc{color:var(--tx3);font-size:10.5px;line-height:1.55}
 
+@media(max-width:720px){
+  .app{display:block;min-height:100vh;padding-bottom:76px}.sb{position:fixed;z-index:50;left:0;right:0;bottom:0;top:auto;width:100%;height:72px;padding:7px 8px;background:rgba(10,15,28,.96);backdrop-filter:blur(16px);border-right:0;border-top:1px solid var(--bdg);display:flex;align-items:center;overflow-x:auto;overflow-y:hidden}
+  .logo,.nav-t,.sb-f{display:none}.nav-i{min-width:76px;height:56px;margin:0 2px;padding:6px 5px;justify-content:center;flex-direction:column;gap:3px;text-align:center;font-size:10px;white-space:nowrap}.nav-i.on::before{left:20%;right:20%;top:0;transform:none;width:auto;height:2px}.nav-ic{width:18px;height:18px}
+  .main{padding:16px 12px}.top{align-items:flex-start;margin-bottom:14px}.pt{font-size:19px}.ps{max-width:230px;line-height:1.45}.kpi,#storeKpi,#custKpi,.admin-kpi{grid-template-columns:repeat(2,minmax(0,1fr))!important}.kc{padding:12px}.kc-v{font-size:19px}.quad{grid-template-columns:repeat(2,1fr)}.pn{padding:14px}.tbl{min-width:620px}.cc.t{height:240px}
+}
+
 </style>
+</head><body>
 <div class="app">
 <aside class="sb">
 <div class="logo"><div class="logo-m">SUM</div><div class="logo-s">AUTO INTELLIGENCE</div><div class="logo-v">V2 · APR 2026</div></div>
@@ -183,7 +193,7 @@ body{font-family:'Noto Sans TC','Saira',system-ui,sans-serif;background:var(--bg
 </aside>
 <main class="main">
 <div class="top">
-<div><div class="pt" id="pgTitle">SUM 戰情室</div><div class="ps" id="pgSub">數據驅動決策 · 智慧營運未來 · 2026 年 4 月</div></div>
+<div><div class="pt" id="pgTitle">SUM 保修戰情室</div><div class="ps" id="pgSub">數據驅動決策 · 智慧營運未來 · 2026 年 4 月</div></div>
 <div class="tr">
 <div class="pill on"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>2026 / 04</div>
 <div class="uc">S</div>
@@ -197,8 +207,8 @@ body{font-family:'Noto Sans TC','Saira',system-ui,sans-serif;background:var(--bg
 <div class="pn"><div class="pn-h"><div class="pn-t"><div class="pn-tg"></div>服務結構</div><span class="tag live">situ_name</span></div><div class="cc s"><canvas id="cStruct"></canvas></div><div class="lg" id="lgStruct"></div></div>
 </div>
 <div class="ai">
-<div class="ai-h"><div class="ai-tr"><div class="ai-iw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div><div><div class="ai-t">AI 經營建議</div><div class="ai-s">基於 4 月真實資料,Claude 自動產生</div></div></div><button class="btn btn-p" id="btnAI"><span id="btnAIt">生成建議</span></button></div>
-<div class="ai-c" id="aiC"><div style="color:var(--tx3);">點擊「生成建議」,Claude 會根據 4 月真實營運資料(營收、毛利、各店表現、流失客戶)提出具體可行建議。</div></div>
+<div class="ai-h"><div class="ai-tr"><div class="ai-iw"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div><div><div class="ai-t">AI 營運洞察</div><div class="ai-s">依 4 月營運資料即時整理重點</div></div></div><button class="btn btn-p" id="btnAI"><span id="btnAIt">產生洞察</span></button></div>
+<div class="ai-c" id="aiC"><div style="color:var(--tx3);">點擊「產生洞察」，系統會依營收、店家表現、Google 商家與會員資料整理優先行動。</div></div>
 </div>
 <div class="row r111">
 <div class="pn"><div class="pn-h"><div class="pn-t"><div class="pn-tg"></div>客戶生命週期</div><span class="tag live">會員</span></div><div class="cc s"><canvas id="cCust"></canvas></div><div class="lg" id="lgCust"></div></div>
@@ -472,6 +482,16 @@ async function genAI(){
   const btn=document.getElementById('btnAI'),t=document.getElementById('btnAIt'),c=document.getElementById('aiC');
   btn.disabled=true;t.textContent='生成中…';c.className='ai-c ld';c.innerHTML='<div class="ld-d"><span></span><span></span><span></span></div><span>Claude 正在分析 4 月真實營運資料…</span>';
   const o=DATA.orders,m=DATA.members,g=DATA.gmb;
+  const insights=[
+    ['先排除異常工單',`目前有 ${o.outlierCount} 筆高金額異常，合計 ${fc(o.outlierTotal)}。正式報表更新前應先完成人工確認，避免營收判讀失真。`],
+    ['補齊 Google 轉換入口',`本期 Google 商家帶來 ${fn(g.totals.intent)} 次進廠意圖，但訊息與預訂仍為 0。優先檢查各店預約連結、商家資訊與追蹤設定。`],
+    ['啟動 VIP 回流',`目前有 ${fn(m.vipLostCount)} 位高價值會員超過 180 天未回廠，累積消費達 ${fc(m.vipLostLTV)}。可依最後服務店分派回訪並追蹤回廠率。`],
+    ['複製高績效店模式',`交叉比對營收前段店家的 Google 進廠意圖、客單與服務結構，整理成區域可直接執行的店務清單。`]
+  ];
+  await new Promise(resolve=>setTimeout(resolve,420));
+  c.className='ai-c';c.innerHTML=`<div style="margin-bottom:11px;font-size:11px;color:var(--tx3);">已依本期資料整理 ${insights.length} 項優先行動：</div><div class="ai-sg">${insights.map(s=>`<div class="ai-sc"><strong>▸ ${s[0]}</strong><br><span style="color:var(--tx2);">${s[1]}</span></div>`).join('')}</div>`;
+  btn.disabled=false;t.textContent='重新整理';
+  return;
   const top5=o.byStore.slice(0,5).map(s=>`${s.name}:${fc(s.revenue)}`).join(', ');
   const prompt=`你是 SUM 汽車保修聯盟的資深營運顧問。根據以下 2026 年 4 月真實資料,提供 4-5 條具體可行的經營建議。每條簡短(2-3 句),點明數據現象與建議行動。繁體中文,直接不囉嗦。
 
@@ -583,7 +603,7 @@ function renderAdmin(){
 }
 
 // ===== Nav =====
-const titles={dash:['SUM 戰情室','數據驅動決策 · 智慧營運未來 · 2026 年 4 月'],attr:['各店行銷歸因','Google 商家進廠意圖 × 營收 · 四象限策略'],store:['店長版','單店健康檢查與營運診斷'],cust:['客戶分析','生命週期 · LTV · VIP 流失預警'],qual:['資料品質','異常值偵測與資料缺口檢核'],dict:['數據字典','統一計算口徑'],admin:['資料管理','數據匯入 · 欄位對應 · 資料源健康度 · AI 待辦']};
+const titles={dash:['SUM 保修戰情室','數據驅動決策 · 智慧營運未來 · 2026 年 4 月'],attr:['各店行銷歸因','Google 商家進廠意圖 × 營收 · 四象限策略'],store:['店長版','單店健康檢查與營運診斷'],cust:['客戶分析','生命週期 · LTV · VIP 流失預警'],qual:['資料品質','異常值偵測與資料缺口檢核'],dict:['數據字典','統一計算口徑'],admin:['資料管理','數據匯入 · 欄位對應 · 資料源健康度 · AI 待辦']};
 function switchView(v){
   document.querySelectorAll('.nav-i').forEach(n=>n.classList.toggle('on',n.dataset.v===v));
   document.querySelectorAll('.view').forEach(el=>el.classList.toggle('on',el.id==='v-'+v));
@@ -605,3 +625,4 @@ document.getElementById('btnVIP').addEventListener('click',downloadVIP);
 renderKPI();renderStoreRank();renderStruct();renderCust();renderAlerts();renderFunnel();
 document.getElementById('srcInfo').textContent='12 個資料源 · '+DATA.orders.activeStores+' 家店';
 </script>
+</body></html>
