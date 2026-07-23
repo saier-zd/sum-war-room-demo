@@ -4,108 +4,17 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>SUM 保修戰情室</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
-  <script src="/dashboard-data.js"></script>
   <style>
-    :root{--bg:#07100d;--panel:#101b17;--panel2:#15241e;--line:#283b33;--ink:#f6faf7;--muted:#93a89d;--green:#79d34d;--green2:#b7ef78;--amber:#ffbf55;--red:#ff706b;--blue:#65b9ff}
-    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 70% 0,#173126 0,transparent 36%),var(--bg);color:var(--ink);font:14px/1.5 Inter,"Noto Sans TC",system-ui,sans-serif}
-    button,select{font:inherit}.shell{display:grid;grid-template-columns:230px 1fr;min-height:100vh}.side{position:sticky;top:0;height:100vh;padding:24px 16px;border-right:1px solid var(--line);background:#0a1511}
-    .brand{display:flex;gap:12px;align-items:center;padding:0 8px 26px}.logo{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:var(--green);color:#10200f;font-weight:950;font-size:19px}.brand b{display:block;font-size:17px}.brand small{color:var(--muted)}
-    nav{display:grid;gap:6px}.nav{border:0;background:transparent;color:var(--muted);text-align:left;padding:11px 13px;border-radius:10px;cursor:pointer}.nav:hover,.nav.active{background:var(--panel2);color:var(--ink)}.nav.active{box-shadow:inset 3px 0 var(--green)}
-    .privacy{position:absolute;bottom:22px;left:20px;right:20px;border:1px solid #31513f;border-radius:12px;padding:12px;color:#a9c5b6;background:#102019;font-size:12px}
-    main{min-width:0;padding:26px 30px 50px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:22px}.top h1{margin:0;font-size:28px}.top p{margin:5px 0 0;color:var(--muted)}
-    .periods{display:flex;gap:6px;padding:4px;background:#0c1713;border:1px solid var(--line);border-radius:12px}.period{border:0;padding:8px 12px;border-radius:8px;color:var(--muted);background:transparent;cursor:pointer}.period.active{background:var(--green);color:#10200f;font-weight:800}
-    .view{display:none}.view.active{display:block}.grid{display:grid;gap:14px}.kpis{grid-template-columns:repeat(6,minmax(130px,1fr));margin-bottom:14px}.card{border:1px solid var(--line);border-radius:15px;background:linear-gradient(145deg,rgba(23,39,32,.94),rgba(12,24,19,.94));padding:18px;min-width:0}.kpi small,.eyebrow{color:var(--muted);font-size:12px}.kpi strong{display:block;margin-top:7px;font-size:25px;letter-spacing:-.5px}.kpi em{font-style:normal;font-size:11px;color:var(--amber)}
-    .cols{grid-template-columns:minmax(0,1.7fr) minmax(300px,.7fr)}.chartbox{height:310px}.card h2{font-size:16px;margin:0 0 3px}.sub{margin:0 0 17px;color:var(--muted);font-size:12px}.insights{display:grid;gap:10px}.insight{padding:13px;border-radius:11px;background:#172820;border-left:3px solid var(--green)}.insight.warn{border-color:var(--amber)}.insight b{display:block;margin-bottom:3px}.section-title{display:flex;align-items:end;justify-content:space-between;margin-bottom:15px}.section-title h2{font-size:20px;margin:0}.section-title p{margin:2px 0 0;color:var(--muted)}
-    .table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:720px}.table th{text-align:left;color:var(--muted);font-size:11px;padding:11px;border-bottom:1px solid var(--line)}.table td{padding:12px 11px;border-bottom:1px solid #21332b}.table tr:hover td{background:#14231d}.num{text-align:right!important;font-variant-numeric:tabular-nums}.rank{color:var(--green2);font-weight:800}.delta.up{color:var(--green2)}.delta.down{color:var(--red)}
-    .rank-grid{grid-template-columns:1.4fr .6fr}.movers{display:grid;grid-template-columns:1fr 1fr;gap:12px}.mover h3{font-size:13px;margin:0 0 10px}.mover-row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);gap:10px}.mover-row span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .quad-grid{grid-template-columns:repeat(4,1fr);margin-top:14px}.quad{border-top:3px solid var(--green)}.quad:nth-child(2){border-color:var(--amber)}.quad:nth-child(3){border-color:var(--blue)}.quad:nth-child(4){border-color:var(--red)}.quad strong{font-size:24px;display:block;margin:8px 0}.quad ul{padding-left:18px;color:var(--muted)}
-    .web-grid,.customer-grid{grid-template-columns:repeat(3,1fr)}.big{font-size:31px;font-weight:850;margin:8px 0}.funnel{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.step{padding:16px;border-radius:12px;background:#14241d}.step strong{font-size:23px;display:block}.step:nth-child(2){border:1px solid var(--amber)}.barrow{display:grid;grid-template-columns:100px 1fr 65px;align-items:center;gap:10px;margin:12px 0}.bar{height:9px;background:#20352b;border-radius:10px;overflow:hidden}.bar i{display:block;height:100%;background:var(--green);border-radius:10px}
-    .alerts{display:grid;gap:10px}.alert{display:grid;grid-template-columns:10px 1fr;gap:12px;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.dot{width:9px;height:9px;margin-top:6px;border-radius:50%;background:var(--amber)}.alert.bad .dot{background:var(--red)}.alert.good .dot{background:var(--green)}.alert b{display:block}.alert p{margin:2px 0;color:var(--muted)}
-    .empty{padding:55px;text-align:center;color:var(--muted)}.footnote{margin-top:14px;color:var(--muted);font-size:12px}.tag{display:inline-block;border:1px solid #3e5b4c;color:#b9cbbf;border-radius:99px;padding:3px 8px;font-size:11px}
-    @media(max-width:1100px){.kpis{grid-template-columns:repeat(3,1fr)}.cols,.rank-grid{grid-template-columns:1fr}.quad-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:760px){.shell{display:block}.side{position:static;height:auto;padding:14px;border-right:0;border-bottom:1px solid var(--line)}.brand{padding-bottom:12px}nav{display:flex;overflow:auto}.nav{white-space:nowrap}.privacy{display:none}main{padding:20px 14px}.top{display:block}.periods{margin-top:16px;overflow:auto}.kpis,.web-grid,.customer-grid{grid-template-columns:repeat(2,1fr)}.quad-grid,.movers,.funnel{grid-template-columns:1fr}.kpi strong{font-size:21px}}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 70% 10%,#401318 0,transparent 36%),#0b0b0c;color:#f7f3f0;font:15px/1.7 Inter,"Noto Sans TC",system-ui,sans-serif}.card{width:min(720px,calc(100% - 32px));padding:42px;border:1px solid #4a262a;border-radius:20px;background:linear-gradient(140deg,#211012,#121214);box-shadow:0 30px 80px #0008}.logo{display:inline-block;padding:11px 9px;border-radius:8px;background:#d71920;font:900 20px/1 Arial}.tag{margin-left:9px;color:#c6a7a8;font-size:11px;letter-spacing:.12em}h1{font-size:32px;margin:24px 0 8px}p{color:#aaa19d;margin:0}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:25px 0}.feature{padding:14px;border:1px solid #39282a;border-radius:10px;background:#171416}.feature b{display:block;color:#ef6a6e}.feature span{font-size:12px;color:#8e8582}a{display:inline-block;margin-top:5px;padding:12px 18px;border-radius:9px;background:#d71920;color:white;text-decoration:none;font-weight:800}@media(max-width:600px){.card{padding:27px}.features{grid-template-columns:1fr}h1{font-size:26px}}
   </style>
 </head>
 <body>
-<div class="shell">
-  <aside class="side">
-    <div class="brand"><div class="logo">SUM</div><div><b>保修戰情室</b><small>Q2 營運決策中心</small></div></div>
-    <nav>
-      <button class="nav active" data-view="overview">戰情總覽</button>
-      <button class="nav" data-view="ranking">店家排行</button>
-      <button class="nav" data-view="attribution">商家歸因</button>
-      <button class="nav" data-view="website">官網成效</button>
-      <button class="nav" data-view="customer">客戶生命週期</button>
-      <button class="nav" data-view="quality">資料品質</button>
-    </nav>
-    <div class="privacy">🔒 僅使用彙總與店家層級資料<br>會員個資未進入網站</div>
-  </aside>
-  <main>
-    <header class="top">
-      <div><h1 id="pageTitle">戰情總覽</h1><p>更新至 2026/07/23・工單依進廠月份歸屬</p></div>
-      <div class="periods" aria-label="期間選擇">
-        <button class="period" data-period="202604">4月</button><button class="period" data-period="202605">5月</button><button class="period active" data-period="202606">6月</button><button class="period" data-period="2026Q2">Q2</button>
-      </div>
-    </header>
-    <section class="view active" id="overview">
-      <div class="grid kpis" id="kpis"></div>
-      <div class="grid cols">
-        <article class="card"><h2>Q2 工單與營收趨勢</h2><p class="sub">4月營收待原始工單補齊；圖表不使用舊版異常營收</p><div class="chartbox"><canvas id="trendChart"></canvas></div></article>
-        <article class="card"><h2>本期作戰判讀</h2><p class="sub">依目前資料自動整理</p><div class="insights" id="insights"></div></article>
-      </div>
-      <article class="card" style="margin-top:14px"><h2>Google 商家行動趨勢</h2><p class="sub">行動＝來電＋路線規劃＋網站點擊；不等同實際進廠</p><div class="chartbox"><canvas id="googleChart"></canvas></div></article>
-    </section>
-    <section class="view" id="ranking">
-      <div class="section-title"><div><h2>店家營運排行</h2><p id="rankingNote">依工單實收排序</p></div><span class="tag">可點月份切換</span></div>
-      <div class="grid rank-grid"><article class="card table-wrap" id="rankingTable"></article><article class="card"><h2>5月 → 6月變化</h2><p class="sub">同店營收絕對增減</p><div class="movers" id="movers"></div></article></div>
-    </section>
-    <section class="view" id="attribution">
-      <div class="section-title"><div><h2>商家互動 × 工單營收</h2><p>用中位數分群，快速找出「高聲量低轉換」與「低聲量高產值」店家</p></div></div>
-      <article class="card"><div class="chartbox"><canvas id="scatterChart"></canvas></div></article><div class="grid quad-grid" id="quadrants"></div>
-      <p class="footnote">只納入可由商家代碼成功串接的店家；路線規劃為意圖訊號，不代表已進廠。</p>
-    </section>
-    <section class="view" id="website">
-      <div class="section-title"><div><h2>官網與廣告流量</h2><p>以匯出檔總計為準，避免到達頁逐列加總造成重複計算</p></div></div>
-      <div class="grid web-grid" id="webCards"></div>
-      <article class="card" style="margin-top:14px"><h2>2026年6月預約事件漏斗</h2><p class="sub">欄位點擊是互動次數，不是完成預約</p><div class="funnel"><div class="step"><span>工單入口點擊</span><strong>466</strong></div><div class="step"><span>表單欄位互動</span><strong>41,587</strong><small style="color:var(--amber)">不可視為轉換數</small></div><div class="step"><span>快速預約送出</span><strong>271</strong></div></div></article>
-      <p class="footnote">GA 匯出可能同時涵蓋 SUM 中古車與保修頁面；2025/2026 事件命名也有變更，暫不直接做轉換同比。</p>
-    </section>
-    <section class="view" id="customer">
-      <div class="section-title"><div><h2>客戶生命週期</h2><p>會員快照截至 2026/07/23，僅顯示去識別化統計</p></div></div>
-      <div class="grid customer-grid" id="customerCards"></div>
-      <article class="card" style="margin-top:14px"><h2>回廠活躍度</h2><p class="sub">依最近一次保修消費距今天數分群</p><div id="lifecycle"></div></article>
-      <p class="footnote">這份會員檔是現況快照，不是逐筆交易歷史，因此不拿來回推各月營收。</p>
-    </section>
-    <section class="view" id="quality"><div class="section-title"><div><h2>資料品質雷達</h2><p>先修口徑與串接，再擴充毛利、同比與技師績效</p></div></div><div class="alerts" id="alerts"></div></section>
+  <main class="card">
+    <span class="logo">SUM</span><span class="tag">WAR ROOM · PRIVATE DATA</span>
+    <h1>SUM 保修戰情室已更新</h1>
+    <p>GitHub 保存介面與歷史版本；營收、工單、店家與會員資料不公開上傳。完整戰情內容請從具權限的 Sites 網站查看。</p>
+    <div class="features"><div class="feature"><b>總部版</b><span>全體與區域戰力</span></div><div class="feature"><b>各區版</b><span>轄區店家比較</span></div><div class="feature"><b>店家版</b><span>單店營運追蹤</span></div></div>
+    <a href="https://sum-repair-dashboard.saierzd.chatgpt.site">開啟權限網站</a>
   </main>
-</div>
-<script>
-const D=window.DASHBOARD_DATA;
-if(D.publicRestricted){
-  document.querySelector('main').innerHTML='<article class="card" style="max-width:720px;margin:10vh auto;padding:34px"><span class="tag">PRIVACY SAFE</span><h1 style="margin:18px 0 8px">SUM 保修戰情室已更新</h1><p style="color:var(--muted)">GitHub 僅保存介面原始碼與歷史版本。營收、店家、會員及商家互動資料未公開上傳；請從具權限的 Sites 網站查看完整戰情室。</p><a href="https://sum-repair-dashboard.saierzd.chatgpt.site" style="display:inline-block;margin-top:18px;padding:11px 16px;border-radius:9px;background:var(--green);color:#10200f;text-decoration:none;font-weight:800">開啟權限網站</a></article>';
-}else{
-let period='202606',view='overview';const fmt=n=>n==null?'—':new Intl.NumberFormat('zh-TW').format(Math.round(n));const money=n=>n==null?'— 待補':'$'+fmt(n);let charts={};
-const labels={overview:'戰情總覽',ranking:'店家排行',attribution:'商家歸因',website:'官網成效',customer:'客戶生命週期',quality:'資料品質'};
-document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>{view=b.dataset.view;document.querySelectorAll('.nav,.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(view).classList.add('active');pageTitle.textContent=labels[view];render()});
-document.querySelectorAll('.period').forEach(b=>b.onclick=()=>{period=b.dataset.period;document.querySelectorAll('.period').forEach(x=>x.classList.toggle('active',x===b));render()});
-function card(label,value,note=''){return `<article class="card kpi"><small>${label}</small><strong>${value}</strong>${note?`<em>${note}</em>`:''}</article>`}
-function chart(id,config){charts[id]?.destroy();charts[id]=new Chart(document.getElementById(id),config)}
-function overview(){const m=D.months[period],w=D.website[period];kpis.innerHTML=card('工單數',fmt(m.jobs),period==='2026Q2'?'已核對完整Q2':'')+card('工單實收',money(m.revenue),m.revenueCoverage?`${m.revenueCoverage}已覆蓋`:period==='202604'?'原始工單待補':'')+card('平均客單',money(m.avgTicket),m.revenueCoverage?'依5–6月計算':'')+card('活躍店家',fmt(m.activeStores))+card('Google 商家行動',fmt(m.google.actions))+card('官網工作階段',w?fmt(w.sessions):period==='2026Q2'?fmt(Object.values(D.website).reduce((a,x)=>a+x.sessions,0)):'—');
- const j=D.months['202606'].jobs-D.months['202605'].jobs,r=D.months['202606'].revenue/D.months['202605'].revenue-1,g=D.months['202606'].google.actions/D.months['202605'].google.actions-1;insights.innerHTML=`<div class="insight ${j<0?'warn':''}"><b>工單量月減 ${Math.abs(j)} 張</b>6月較5月 ${j<0?'下滑':'增加'} ${Math.abs(j/D.months['202605'].jobs*100).toFixed(1)}%，需從店家下滑名單追查。</div><div class="insight"><b>營收近乎持平、客單上升</b>6月營收 ${r<0?'微減':'成長'} ${Math.abs(r*100).toFixed(1)}%，平均客單提高，量減但價值守住。</div><div class="insight ${g<0?'warn':''}"><b>商家行動 ${g<0?'略降':'成長'}</b>6月較5月 ${g<0?'減少':'增加'} ${Math.abs(g*100).toFixed(1)}%，主要觀察來電與路線規劃。</div>`;
- chart('trendChart',{data:{labels:['4月','5月','6月'],datasets:[{type:'bar',label:'工單數',data:['202604','202605','202606'].map(x=>D.months[x].jobs),backgroundColor:'#79d34d',yAxisID:'y'},{type:'line',label:'營收（百萬）',data:['202604','202605','202606'].map(x=>D.months[x].revenue&&D.months[x].revenue/1e6),borderColor:'#ffbf55',backgroundColor:'#ffbf55',yAxisID:'y1',tension:.35}]},options:chartOpts({y:{beginAtZero:false},y1:{position:'right',grid:{drawOnChartArea:false}}})});
- chart('googleChart',{type:'bar',data:{labels:['4月','5月','6月'],datasets:[['calls','來電','#65b9ff'],['directions','路線規劃','#79d34d'],['websiteClicks','網站點擊','#ffbf55']].map(([k,l,c])=>({label:l,data:['202604','202605','202606'].map(x=>D.months[x].google[k]),backgroundColor:c}))},options:chartOpts({x:{stacked:true},y:{stacked:true}})});
-}
-function chartOpts(scales={}){return{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#b5c7bd'}}},scales:Object.fromEntries(Object.entries(scales).map(([k,v])=>[k,{...v,ticks:{color:'#8fa59a'},grid:{color:'#263a31',...(v.grid||{})}}]))}}
-function selectedStores(){if(period==='202604')return[];if(period==='2026Q2'){let map={};['202605','202606'].forEach(p=>D.stores[p].forEach(s=>{let x=map[s.unit]||{...s,jobs:0,revenue:0,actions:0,calls:0,directions:0,websiteClicks:0};['jobs','revenue','actions','calls','directions','websiteClicks'].forEach(k=>x[k]+=s[k]);x.avgTicket=x.revenue/x.jobs;map[s.unit]=x}));return Object.values(map)}return D.stores[period]}
-function ranking(){let s=selectedStores().sort((a,b)=>b.revenue-a.revenue);rankingNote.textContent=period==='202604'?'4月原始工單待補，暫無店家排行':period==='2026Q2'?'Q2排行目前為5–6月工單實收加總':'依工單實收排序';rankingTable.innerHTML=s.length?`<table class="table"><thead><tr><th>#</th><th>店家</th><th class="num">工單</th><th class="num">營收</th><th class="num">客單</th><th class="num">商家行動</th></tr></thead><tbody>${s.slice(0,30).map((x,i)=>`<tr><td class="rank">${i+1}</td><td>${x.name}<br><small style="color:var(--muted)">${x.unit}</small></td><td class="num">${fmt(x.jobs)}</td><td class="num">${money(x.revenue)}</td><td class="num">${money(x.avgTicket)}</td><td class="num">${x.googleMatched===false?'—':fmt(x.actions)}</td></tr>`).join('')}</tbody></table>`:'<div class="empty">4月店家級工單資料待補</div>';
- const c=[...D.storeChanges],render=(arr,title,cls)=>`<div class="mover"><h3>${title}</h3>${arr.map(x=>`<div class="mover-row"><span>${x.name}</span><b class="delta ${cls}">${x.revenueChange>0?'+':''}${money(x.revenueChange)}</b></div>`).join('')}</div>`;movers.innerHTML=render(c.sort((a,b)=>b.revenueChange-a.revenueChange).slice(0,5),'成長 Top 5','up')+render(c.sort((a,b)=>a.revenueChange-b.revenueChange).slice(0,5),'下滑 Top 5','down')}
-function attribution(){let s=selectedStores().filter(x=>x.googleMatched&&x.actions>0);if(!s.length){quadrants.innerHTML='<div class="card empty">本期尚無可串接資料</div>';charts.scatterChart?.destroy();return}let med=k=>{let a=s.map(x=>x[k]).sort((a,b)=>a-b);return a[Math.floor(a.length/2)]},ma=med('actions'),mr=med('revenue');let qs=[[],[],[],[]];s.forEach(x=>qs[(x.actions>=ma?0:2)+(x.revenue>=mr?0:1)].push(x));let names=['高行動 × 高營收','高行動 × 低營收','低行動 × 高營收','低行動 × 低營收'];quadrants.innerHTML=qs.map((q,i)=>`<article class="card quad"><small>${names[i]}</small><strong>${q.length} 家</strong><ul>${q.sort((a,b)=>b.revenue-a.revenue).slice(0,3).map(x=>`<li>${x.name}</li>`).join('')}</ul></article>`).join('');
- chart('scatterChart',{type:'scatter',data:{datasets:[{label:'可串接店家',data:s.map(x=>({x:x.actions,y:x.revenue/1e4,name:x.name})),backgroundColor:'#79d34daa',pointRadius:5}]},options:{...chartOpts({x:{title:{display:true,text:'Google 商家行動',color:'#93a89d'}},y:{title:{display:true,text:'工單營收（萬元）',color:'#93a89d'}}}),plugins:{tooltip:{callbacks:{label:c=>`${c.raw.name}：${fmt(c.raw.x)} 次／${fmt(c.raw.y)} 萬`}},legend:{display:false}}}})}
-function website(){webCards.innerHTML=['202604','202605','202606'].map(p=>`<article class="card"><small>${p.slice(4)}月工作階段</small><div class="big">${fmt(D.website[p].sessions)}</div>${p==='202606'?`<span class="tag">自然搜尋 ${fmt(D.website[p].organic)}</span> <span class="tag">CPC ${fmt(D.website[p].cpc)}</span>`:''}</article>`).join('')}
-function customer(){let c=D.customer;if(c.restricted){customerCards.innerHTML=card('會員總數',fmt(c.members))+card('曾有保修消費',fmt(c.repairCustomers))+card('保修滲透率',(c.repairCustomers/c.members*100).toFixed(1)+'%');lifecycle.innerHTML='<div class="empty">GitHub 公開版已隱藏客群生命週期與價值分群；完整資料僅在權限網站提供。</div>';return}customerCards.innerHTML=card('會員總數',fmt(c.members))+card('曾有保修消費',fmt(c.repairCustomers))+card('重複消費客戶',fmt(c.repeatCustomers))+card('高價值客戶 ≥5萬',fmt(c.vip))+card('高價值流失風險',fmt(c.vipAtRisk),'超過180天未回廠')+card('保修滲透率',(c.repairCustomers/c.members*100).toFixed(1)+'%');let l=c.lifecycle,total=Object.values(l).reduce((a,b)=>a+b,0),rows=[['30天內','active30'],['31–90天','active90'],['91–180天','dormant180'],['180天以上','lost']];lifecycle.innerHTML=rows.map(([n,k])=>`<div class="barrow"><span>${n}</span><div class="bar"><i style="width:${l[k]/total*100}%"></i></div><b class="num">${fmt(l[k])}</b></div>`).join('')}
-function quality(){alerts.innerHTML=D.quality.map(x=>`<article class="alert ${x.level}"><i class="dot"></i><div><b>${x.title}</b><p>${x.detail}</p></div></article>`).join('')}
-function render(){overview();ranking();attribution();website();customer();quality()}render();
-}
-</script>
 </body>
 </html>
