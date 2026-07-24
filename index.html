@@ -32,7 +32,7 @@
     <section class="portal" id="users">
       <h2>帳號與權限</h2>
 	      <p>這裡是替其他人開通帳號，你自己的管理員帳號不需要再註冊。</p>
-	      <div class="notice" id="mailStatus">正在檢查寄信服務…</div>
+	      <div class="notice ok" id="mailStatus">目前採手動通知：建立帳號後，請自行將登入網址、帳號與密碼傳給對方。</div>
       <form id="userForm">
         <label for="newEmail">使用者 Email</label><input id="newEmail" type="email" required>
         <label for="newPassword">初始密碼</label><input id="newPassword" type="password" minlength="8" required>
@@ -40,7 +40,7 @@
         <select id="newRole" style="width:100%;padding:13px;border:1px solid #493034;border-radius:9px;background:#0e0d0f;color:white">
           <option value="viewer">僅檢視</option><option value="store_user">店家帳號</option><option value="regional_manager">區域管理者</option><option value="headquarters">總部管理者</option><option value="system_admin">系統管理員</option>
         </select>
-	        <button id="createUser" type="submit">建立使用者帳號</button>
+	        <button id="createUser" type="submit">建立並啟用帳號</button>
       </form>
       <div id="userMsg" class="msg"></div><div id="userList"></div>
       <button class="logout" id="back">返回</button>
@@ -53,11 +53,11 @@
     async function check(){const r=await fetch("/api/auth/me");if(r.ok)showUser((await r.json()).user);}
     document.querySelector("#form").addEventListener("submit",async e=>{e.preventDefault();const btn=document.querySelector("#submit");btn.disabled=true;msg.textContent="";try{const r=await fetch("/api/auth/login",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:e.target.email.value,password:e.target.password.value})});const data=await r.json();if(!r.ok)throw new Error(data.error||"登入失敗");showUser(data.user);}catch(err){msg.textContent=err.message;}finally{btn.disabled=false;}});
     document.querySelector("#logout").addEventListener("click",async()=>{await fetch("/api/auth/logout",{method:"POST"});location.reload();});
-	    async function loadUsers(){const r=await fetch("/api/admin/users"),data=await r.json();if(!r.ok)return;const mail=document.querySelector("#mailStatus"),create=document.querySelector("#createUser");mail.className=`notice ${data.emailConfigured?"ok":""}`;mail.textContent=data.emailConfigured?"寄信服務已連線：建立帳號後會自動寄出開通信。":"寄信服務尚未連線：目前可建立帳號，但不會寄信。";create.textContent=data.emailConfigured?"建立帳號並寄出開通信":"建立帳號（目前不寄信）";document.querySelector("#userList").innerHTML=data.users.map(u=>`<div class="meta" style="margin-top:10px">${u.email}<br><small>${u.role}｜${u.is_active?"已啟用":"已停用"}</small>${Number(u.id)!==Number(me.id)?`<button data-id="${u.id}" data-active="${!u.is_active}" style="margin-top:9px">${u.is_active?"停用權限":"重新啟用"}</button>`:""}</div>`).join("");document.querySelectorAll("#userList button").forEach(b=>b.onclick=async()=>{await fetch("/api/admin/users",{method:"PATCH",headers:{"content-type":"application/json"},body:JSON.stringify({id:Number(b.dataset.id),isActive:b.dataset.active==="true"})});loadUsers();});}
+	    async function loadUsers(){const r=await fetch("/api/admin/users"),data=await r.json();if(!r.ok)return;document.querySelector("#userList").innerHTML=data.users.map(u=>`<div class="meta" style="margin-top:10px">${u.email}<br><small>${u.role}｜${u.is_active?"已啟用":"已停用"}</small>${Number(u.id)!==Number(me.id)?`<button data-id="${u.id}" data-active="${!u.is_active}" style="margin-top:9px">${u.is_active?"停用權限":"重新啟用"}</button>`:""}</div>`).join("");document.querySelectorAll("#userList button").forEach(b=>b.onclick=async()=>{await fetch("/api/admin/users",{method:"PATCH",headers:{"content-type":"application/json"},body:JSON.stringify({id:Number(b.dataset.id),isActive:b.dataset.active==="true"})});loadUsers();});}
     document.querySelector("#manage").onclick=()=>{portal.style.display="none";document.querySelector("#users").style.display="block";loadUsers();};
     document.querySelector("#back").onclick=()=>{document.querySelector("#users").style.display="none";portal.style.display="block";};
 	    document.querySelector("#dashboard").onclick=()=>{document.querySelector("#userMsg").textContent="";alert("登入與權限正常，但戰情室主畫面尚未接回此網址；這不是註冊問題。");};
-	    document.querySelector("#userForm").addEventListener("submit",async e=>{e.preventDefault();const btn=document.querySelector("#createUser");btn.disabled=true;const r=await fetch("/api/admin/users",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:document.querySelector("#newEmail").value,password:document.querySelector("#newPassword").value,role:document.querySelector("#newRole").value})}),data=await r.json();const m=document.querySelector("#userMsg");m.textContent=r.ok?(data.email.sent?"帳號已建立，開通信已寄出。對方直接登入即可，不需再次註冊。":`帳號已建立，但信件未寄出（${data.email.reason==="email_not_configured"?"寄信服務尚未連線":"寄送失敗"}）。`):data.error;btn.disabled=false;if(r.ok){e.target.reset();loadUsers();}});
+	    document.querySelector("#userForm").addEventListener("submit",async e=>{e.preventDefault();const btn=document.querySelector("#createUser");btn.disabled=true;const r=await fetch("/api/admin/users",{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({email:document.querySelector("#newEmail").value,password:document.querySelector("#newPassword").value,role:document.querySelector("#newRole").value,sendEmail:false})}),data=await r.json();const m=document.querySelector("#userMsg");m.textContent=r.ok?"帳號已建立並啟用，不需再次註冊。請自行將登入網址、帳號與密碼傳給對方。":data.error;btn.disabled=false;if(r.ok){e.target.reset();loadUsers();}});
     check();
   </script>
 </body>
