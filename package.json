@@ -1,0 +1,12 @@
+{
+  "name": "sum-war-room-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "mkdir -p dist && cp index.html dashboard-data.js dist/"
+  },
+  "dependencies": {
+    "@netlify/database": "^1.0.0",
+    "@netlify/functions": "^4.2.5"
+  }
+}
