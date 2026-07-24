@@ -62,7 +62,12 @@ export default async (req: Request, _context: Context) => {
           ${permissions}::jsonb, ${regions}::jsonb, ${stores}::jsonb)
         RETURNING id, email, role, display_name, is_active, permissions, regions, stores, created_at
       `;
-      const emailResult = await sendWelcomeEmail(email);
+      // Account creation is intentionally independent from email delivery.
+      // Keep the delivery path available for a future opt-in UI, but never send
+      // unless the administrator explicitly requests it.
+      const emailResult = body.sendEmail === true
+        ? await sendWelcomeEmail(email)
+        : { sent: false, reason: "email_skipped" };
       return json({ user, email: emailResult }, 201);
     } catch (error: any) {
       if (error?.code === "23505") return json({ error: "此 Email 已存在" }, 409);
