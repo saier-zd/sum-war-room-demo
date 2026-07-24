@@ -22,6 +22,14 @@ async function sendWelcomeEmail(email: string) {
   return response.ok ? { sent: true } : { sent: false, reason: "email_delivery_failed" };
 }
 
+function emailConfigured() {
+  return Boolean(
+    Netlify.env.get("RESEND_API_KEY") &&
+    Netlify.env.get("ACCESS_EMAIL_FROM") &&
+    Netlify.env.get("URL")
+  );
+}
+
 export default async (req: Request, _context: Context) => {
   const actor = await currentUser(req);
   if (!actor || actor.role !== "system_admin") return json({ error: "Forbidden" }, 403);
@@ -32,7 +40,7 @@ export default async (req: Request, _context: Context) => {
       SELECT id, email, role, display_name, is_active, permissions, regions, stores, created_at
       FROM app_users ORDER BY created_at ASC
     `;
-    return json({ users });
+    return json({ users, emailConfigured: emailConfigured() });
   }
 
   if (req.method === "POST") {
@@ -81,4 +89,3 @@ export default async (req: Request, _context: Context) => {
 };
 
 export const config: Config = { path: "/api/admin/users" };
-
